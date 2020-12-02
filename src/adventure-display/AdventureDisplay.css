@@ -1,0 +1,8 @@
+.DisplayConsole {
+    min-height: 30rem;
+    max-height: 30rem;
+    overflow-y: scroll;
+    border-left: aquamarine;
+    border-left-style: groove;
+    border-left-width: 0.2rem;
+}
