@@ -9,18 +9,27 @@ import Engine from "./Engine";
 const engine = new Engine()
 
 function App() {
-  const [entries, setEntries] = useState(engine.entries)
-  const [inventory, setInventory] = useState(engine.inventory)
+    const [entries, setEntries] = useState(engine.entries)
+    const [inventory, setInventory] = useState(engine.inventory)
 
-  return (
-    <Container>
-      <AdventureDisplay entries={entries} />
-      <TextInput handleCommand={(c) => { engine.handleCommand(c); setEntries(engine.entries); setInventory(engine.inventory) } } />
-      <Inventory items={inventory} />
+    return (
+        <>
+            <Container>
+                <AdventureDisplay entries={entries}/>
+                <TextInput handleCommand={(c) => {
+                    engine.handleCommand(c);
+                    setEntries(engine.entries);
+                    setInventory(engine.inventory)
+                }}/>
+                <Inventory items={inventory}/>
+            </Container>
 
-      <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-    </Container>
-  );
+            <footer className="Footer">
+                <p>Created by ThetaSinner</p>
+                <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+            </footer>
+        </>
+    );
 }
 
 export default App;

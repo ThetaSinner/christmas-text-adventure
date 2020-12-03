@@ -6,11 +6,15 @@ import {InventoryItemType} from "./InventoryItemType";
 import getInventoryIcon from "./InventoryItemIcons";
 
 export default function Inventory({ items }: { items: InventoryItemType[] }) {
+    const renderItems = Array(6).fill(InventoryItemType.Empty).map((v, index) => {
+        return index < items.length ? items[index] : v
+    })
+
     return (
         <>
             <h2>Inventory</h2>
             <Row>
-                {items.map((item, index) => <InventoryItem index={index + 1} item={item}/>)}
+                {renderItems.map((item, index) => <InventoryItem key={index} index={index + 1} item={item}/>)}
             </Row>
         </>
     )
@@ -21,7 +25,7 @@ function InventoryItem({index, item}: { index: number, item: InventoryItemType }
         <Col xs={2}>
             <p className="ItemIndex">{index}</p>
             <div className="ItemContent">
-                <Image src={getInventoryIcon(item)} rounded fluid/>
+                {item === InventoryItemType.Empty ? <></> : <Image src={getInventoryIcon(item)} rounded fluid/>}
             </div>
         </Col>
     )

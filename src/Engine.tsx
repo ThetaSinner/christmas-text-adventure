@@ -1,5 +1,5 @@
 import {Entry, EntryType} from "./adventure-display/Entry";
-import {InventoryItemType} from "./inventory/InventoryItemType";
+import {getItemTypeName, InventoryItemType} from "./inventory/InventoryItemType";
 
 
 export default class Engine {
@@ -162,13 +162,131 @@ export default class Engine {
                         value: "Alvin: \"Ahhh, yes, Australia. That's on fire too... Anywhoo, we must be here for a reason.\""
                     })
 
-                    this._entries = this._entries.concat({
+                    this._entries.push({
                         kind: EntryType.Text,
                         value: "You look around and see destruction and devastation everywhere. The koala isn't making good progress, he seems to be heading towards the... oh dear that's not good. " +
-                            "It's clear you can't stay here, so you start to move (not where the koala went)."
+                            "It's clear you can't stay here, so you start to move (not where the koala went). " +
+                            "The smoke starts to swirl strangely around you and the heat intensifies. With a rushing sound the smoke forms into a figure in front of you."
+                    })
+
+                    this._entries.push({
+                        kind: EntryType.Text,
+                        value: "Smoke creature: \"You cannot pass this way, my fire is hungry and you will feeeeeed it\""
+                    })
+
+                    this._entries = this._entries.concat({
+                        kind: EntryType.Options,
+                        value: "You can't turn back, who would save christmas! What should you do next?",
+                        options: [
+                            "Push Alvin back into the fire, the creature will be satisfied",
+                            `Throw your ${getItemTypeName(this.inventory[0])} at the creature`,
+                            "Sing a christmas song, nobody could be down while listening to that"
+                        ]
                     })
 
                     this._state++
+                }
+                break
+            case 5:
+                if (command === '3') {
+                    this._entries.push({
+                        kind: EntryType.Echo,
+                        value: command
+                    })
+
+                    this._entries.push({
+                        kind: EntryType.Text,
+                        value: "You start singing and the smoke creature seems to settle a little."
+                    })
+
+                    this._entries = this._entries.concat({
+                        kind: EntryType.Prompt,
+                        value: "Keep singing?"
+                    })
+
+                    this._state++
+                }
+
+                if (command === '2') {
+                    this._entries.push({
+                        kind: EntryType.Echo,
+                        value: command
+                    })
+
+                    this._entries.push({
+                        kind: EntryType.Text,
+                        value: `You hurl the ${getItemTypeName(this.inventory[0])} at the smoke creature. It burns up inside its the creature and produces a strange odour. ` +
+                            "The creature seems to relax, the heat starts to drop and its form fades until there is very little left. Good thing you didn't eat that!"
+                    })
+
+                    this._entries = this._entries.concat({
+                        kind: EntryType.Options,
+                        value: "You move towards where the creature was and find some christmas items near where it formed. Which two are you going to take?",
+                        options: [
+                            "Berries and pancakes",
+                            "Sausage and chestnut"
+                        ]
+                    })
+
+                    this._inventory[0] = InventoryItemType.Empty
+                    this._state += 2
+                }
+
+                if (command === '1') {
+                    this._entries.push({
+                        kind: EntryType.Echo,
+                        value: command
+                    })
+
+                    this._entries = this._entries.concat({
+                        kind: EntryType.Text,
+                        value: "You shove Alvin backwards into the fire and as he begins to scream, the smoke creature bristles and wails. It seems that in spite of its malevolent nature " +
+                            "it has been angered by your entirely unnecessary killing of your travelling companion. The creature rushes towards you, its edges becoming sharper and more defined the as it gathers speed. " +
+                            "You turn and run to try to get away. Straight into the fire. You die."
+                    })
+
+                    this._state = -1
+                }
+                break
+            case 6:
+                if (command === 'y') {
+                    this._entries.push({
+                        kind: EntryType.Echo,
+                        value: command
+                    })
+
+                    this._entries = this._entries.concat({
+                        kind: EntryType.Text,
+                        value: "You reach the 4th round of '5 gold rings' and the singing seems to start angering the smoke creature. It rushes at you, your lungs fill with smoke and you die."
+                    })
+
+                    this._state = -1
+                }
+
+                if (command === 'n') {
+                    this._entries.push({
+                        kind: EntryType.Echo,
+                        value: command
+                    })
+
+                    this._entries = this._entries.concat({
+                        kind: EntryType.Text,
+                        value: "You stop singing."
+                    })
+
+                    this._state = 4
+                    this.handleCommand('1')
+                }
+                break
+            case 7:
+                if (command === '1') {
+                    this._inventory[0] = (InventoryItemType.Berries)
+                    this._inventory = this._inventory.concat(InventoryItemType.Pancakes)
+                }
+
+                if (command === '2') {
+                    this._inventory[0] = (InventoryItemType.Sausage)
+                    this._inventory = this._inventory.concat(InventoryItemType.Chestnut)
                 }
                 break
         }
